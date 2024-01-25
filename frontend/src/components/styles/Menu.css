@@ -1,0 +1,14 @@
+.login-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+  
+.login-info span {
+  margin-right: 10px;
+}
+
+.menu {
+  background-color: #f5f6f6 !important;
+  border: 1px solid #dee2e6 !important;
+}

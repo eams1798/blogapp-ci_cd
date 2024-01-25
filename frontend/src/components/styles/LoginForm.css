@@ -1,0 +1,23 @@
+@media screen and (max-width: 992px) {
+  .responsive-controller {
+    position: relative;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .responsive-controller {
+    position: absolute;
+    z-index: 1000;
+    right: 0;
+  }
+}
+
+
+.login-form {
+  padding: .1rem 0;
+  border: 1px solid #dee2e6 !important;
+}
+
+.login-form div, .form-buttons {
+  margin: 1rem;
+}

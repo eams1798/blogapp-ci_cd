@@ -1,0 +1,26 @@
+.blog {
+    background-color: #f5f6f6 !important;
+}
+
+/* .blog {
+    background-color: #dee2e6;
+    margin: 1rem;
+}
+
+.blog-title {
+    margin: 1rem;
+}
+.blog .togglable-container > div, .blog-title-container {
+    margin: 0 1rem;
+}
+
+.blog .togglable-container > div, .blog-title-container, .blog-title {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.blog-title-container, .blog-title {
+    justify-content: space-between;
+} */
