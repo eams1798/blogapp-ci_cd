@@ -1,7 +1,7 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { Button, Collapse, Container } from "react-bootstrap";
 
-interface TogglableProps {
+export interface TogglableProps {
   className?: string;
   openButtonLabel: string;
   closeButtonLabel?: string;
@@ -9,9 +9,13 @@ interface TogglableProps {
   isVisible?: boolean;
 }
 
-const Togglable = forwardRef(
+export type TogglableRef = ({
+  toggleVisibility: () => void;
+})
+
+const Togglable = forwardRef<TogglableRef, TogglableProps>(
   (
-    { className, openButtonLabel, closeButtonLabel, children, isVisible }: TogglableProps,
+    { className, openButtonLabel, closeButtonLabel, children, isVisible },
     refs,
   ) => {
     const [visible, setVisible] = useState(isVisible || false);

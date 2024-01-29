@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { IBlog } from "../interfaces/blog";
-import Togglable from "./Togglable";
+import Togglable, { TogglableRef } from "./Togglable";
 import BlogForm from "./BlogForm";
 import { Link } from "react-router-dom";
 import { loginResponse } from "../interfaces/login";
@@ -16,7 +14,7 @@ interface IBlogListProps {
 }
 
 const BlogList = ({ loginUser, blogs }: IBlogListProps) => {
-  const togglableRef = useRef<typeof Togglable>(null);
+  const togglableRef = useRef<TogglableRef>(null);
   return (
     <div id="blog-list" className="pt-5">
       {loginUser?

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -7,7 +5,7 @@ import { setAxiosErrorMessage } from "../reducers/notification";
 import { AppThunkDispatch } from "../interfaces/reducers";
 import { login } from "../reducers/loginUser";
 import { Form, Button } from "react-bootstrap";
-import Togglable from "./Togglable";
+import Togglable, { TogglableRef } from "./Togglable";
 import "./styles/LoginForm.css";
 
 const LoginForm = ({ toggleVisibility }: { toggleVisibility: () => void}) => {
@@ -61,7 +59,7 @@ const LoginForm = ({ toggleVisibility }: { toggleVisibility: () => void}) => {
 };
 
 const Login = () => {
-  const togglableRef = useRef<typeof Togglable>(null);
+  const togglableRef = useRef<TogglableRef>(null);
   return (
     <Togglable openButtonLabel="Login" closeButtonLabel="_nobutton" ref={togglableRef}>
       <></>
