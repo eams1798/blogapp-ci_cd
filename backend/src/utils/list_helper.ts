@@ -1,9 +1,5 @@
 import { IBlog, IFavBlog, IMostBlogs, IMostLikes } from "../interfaces/blogInterfaces";
 
-const dummy = ( blogs: IBlog [] ): number => {
-  return 1;
-};
-
 const totalLikes = ( blogs: IBlog[] ): number => {
   const reducer = ( sum: number, blog: IBlog ): number => {
     return sum + blog.likes;
@@ -72,7 +68,6 @@ const mostLikes = ( blogs : IBlog[] ): IMostLikes[] => {
 };
 
 export {
-  dummy,
   totalLikes,
   favoriteBlogs,
   mostBlogs,
