@@ -16,8 +16,8 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: cd frontend && yarn install
+        run: cd backend && yarn install
       - name: Lint
-        run: cd frontend && yarn lint
+        run: cd backend && yarn lint
       - name: Test
-        run: cd frontend && yarn test
+        run: cd backend && yarn test
