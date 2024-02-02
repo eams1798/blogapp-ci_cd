@@ -12,7 +12,7 @@ on:
       - synchronize
 
 jobs:
-  backend_deployment:
+  backend_workflow:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -27,10 +27,10 @@ jobs:
         run: cd backend && yarn lint
       - name: Test
         run: cd backend && TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }} SECRET=${{ secrets.SECRET }} yarn test
-  frontend_deployment:
+  frontend_test_and_fullstack_deployment:
     runs-on: ubuntu-20.04
     needs:
-      - backend_deployment
+      - backend_workflow
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,3 +54,45 @@ jobs:
           wait-on: http://localhost:3001
           browser: chrome
           record: true
+      - name: Deploy to production
+        id: deploy
+        env:
+          COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ' ') }}
+        if: ${{ github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip') }}
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+      - name: Test Failure
+        uses: BubbleProd/discord-webhook-notify@v2
+        if: failure()
+        with:
+            severity: error
+            details: Pipeline failed
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Test Failure at Deploy
+        uses: BubbleProd/discord-webhook-notify@v2
+        if: ${{ steps.deploy.conclusion == 'failure' }}
+        with:
+            severity: error
+            details: ${{ steps.deploy.outputs.message }}
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  tag_release:
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    needs: frontend_test_and_fullstack_deployment
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+      - name: Test success
+        uses: BubbleProd/discord-webhook-notify@v2
+        if: success()
+        with:
+            severity: info
+            details: Pipeline success
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
