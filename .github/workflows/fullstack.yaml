@@ -29,6 +29,8 @@ jobs:
         run: cd backend && TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }} SECRET=${{ secrets.SECRET }} yarn test
   frontend_deployment:
     runs-on: ubuntu-20.04
+    needs:
+      - backend_deployment
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
