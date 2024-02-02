@@ -1,0 +1,44 @@
+name: Fullstack Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  backend_deployment:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: cd backend && yarn install
+      - name: Lint
+        run: cd backend && yarn lint
+      - name: Test
+        run: cd backend && TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }} SECRET=${{ secrets.SECRET }} yarn test
+  frontend_deployment:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: cd frontend && yarn install
+      - name: Lint
+        run: cd frontend && yarn lint
+      - name: Test
+        run: cd backend && yarn start:test && cd ../frontend && yarn test
