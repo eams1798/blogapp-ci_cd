@@ -20,4 +20,4 @@ jobs:
       - name: Lint
         run: cd backend && yarn lint
       - name: Test
-        run: cd backend && yarn test
+        run: cd backend && TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }} yarn test
