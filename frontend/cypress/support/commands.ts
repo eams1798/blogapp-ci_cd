@@ -19,7 +19,7 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add("visitFrontend", function () {
-  return cy.visit("http://localhost:5173");
+  return cy.visit("http://localhost:5000");
 });
 
 Cypress.Commands.add(
