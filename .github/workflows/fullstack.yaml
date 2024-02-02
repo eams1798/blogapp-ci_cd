@@ -42,5 +42,16 @@ jobs:
         run: cd frontend && yarn install
       - name: Lint
         run: cd frontend && yarn lint
+      - name: Build
+        run: cd frontend && yarn build
       - name: Test
-        run: cd backend && yarn start:test && cd ../frontend && yarn test
+        run: cd frontend && yarn test
+      - name: Test e2e
+        uses: cypress-io/github-action@v5
+        with:
+          command: cd frontend && yarn test:e2e
+          start: cd backend && yarn start:cypress
+          wait-on: http://localhost:5000
+          browser: chrome
+          record: true
+          config-file: cypress.json
