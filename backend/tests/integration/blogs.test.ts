@@ -2,6 +2,8 @@ import supertest from "supertest";
 import mongoose from "mongoose";
 import app from "../../src/app";
 import helper from "../test_helper";
+import { beforeEach, afterAll, describe, test, expect } from "@jest/globals";
+import { IUser } from "../../src/interfaces/user";
 
 const api = supertest(app);
 
@@ -31,9 +33,10 @@ describe("Testing blogs", () => {
 
   test("GET /api/blogs/:id returns correct blog with valid id", async () => {
     const blogsAtStart = await helper.blogsInDb();
+
     const blogToView = blogsAtStart[0];
     const resultBlog = await api.get(`/api/blogs/${blogToView["id"]}`).expect(200);
-    blogToView.user = blogToView.user.toString();
+
     expect(resultBlog.body).toEqual(blogToView);
   });
 
@@ -80,7 +83,7 @@ describe("Testing blogs", () => {
     const newBlog = {
       title: "New blog post for testing",
       author: "Test author",
-      url: "https://www.test.com/blog",
+      url: "https://www.blogtest.com/blog",
       likes: 100,
     };
 
@@ -164,7 +167,8 @@ describe("Testing blogs", () => {
 
     const initialUsers = await helper.usersInDb();
 
-    const blogToUpdate = blogsAtStart.filter(blog => initialUsers[0].id === blog.user.toString())[0];
+    const blogToUpdate = blogsAtStart.filter(blog => initialUsers[0].id === (blog.user as IUser).id)[0];
+
     const propertiesToUpdate = { likes: 200 };
 
     await api
@@ -218,7 +222,12 @@ describe("Testing blogs", () => {
     const userToken = loginResponse.body.token;
 
     const blogsAtStart = await helper.blogsInDb();
-    const blogToDelete = blogsAtStart[0];
+    const blogToDelete = blogsAtStart.find(blog => (blog.user as IUser).username === loginResponse.body.username);
+
+    if (!blogToDelete) {
+      throw new Error("Blog not found");
+    }
+
     await api
       .delete(`/api/blogs/${blogToDelete["id"]}`)
       .set("Authorization", `Bearer ${userToken}`)

@@ -3,6 +3,7 @@ import supertest from "supertest";
 import app from "../../src/app";
 import User from "../../src//models/user";
 import helper from "../test_helper";
+import { beforeEach, afterAll, describe, test, expect } from "@jest/globals";
 
 const api = supertest(app);
 
@@ -42,7 +43,7 @@ describe("tests for login", () => {
       .send(loginInfoWithWrongPassword)
       .expect(401);
 
-    expect(result.body.error).toContain("invalid username or password");
+    expect((result.body.error as string).toLowerCase()).toContain("invalid username or password");
     expect(result.body.token).not.toBeDefined();
   });
 

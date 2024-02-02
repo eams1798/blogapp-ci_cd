@@ -1,5 +1,6 @@
 import { favoriteBlogs } from "../../src/utils/list_helper";
 import { IBlog } from "../../src/interfaces/blogInterfaces";
+import { describe, test, expect } from "@jest/globals";
 
 describe("tests for function favoriteBlogs", () => {
   test("When the list is empty", () => {
@@ -15,7 +16,8 @@ describe("tests for function favoriteBlogs", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = favoriteBlogs(singleBlogList);
@@ -29,21 +31,24 @@ describe("tests for function favoriteBlogs", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 2",
         url: "http://blog2.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 3",
         url: "http://blog3.com",
         likes: 15,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = favoriteBlogs(multipleBlogList);
@@ -57,21 +62,24 @@ describe("tests for function favoriteBlogs", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 2",
         url: "http://blog2.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 3",
         url: "http://blog3.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = favoriteBlogs(sameLikesBlogList);
@@ -85,21 +93,24 @@ describe("tests for function favoriteBlogs", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 2",
         url: "http://blog2.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 3",
         url: "http://blog3.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = favoriteBlogs(multipleFavoriteBlogList);

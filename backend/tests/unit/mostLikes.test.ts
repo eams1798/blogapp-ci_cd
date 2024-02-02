@@ -1,5 +1,6 @@
 import { mostLikes } from "../../src/utils/list_helper";
 import { IBlog } from "../../src/interfaces/blogInterfaces";
+import { describe, test, expect } from "@jest/globals";
 
 describe("tests for function mostLikes", () => {
   test("When the list is empty", () => {
@@ -15,14 +16,16 @@ describe("tests for function mostLikes", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 1",
         url: "http://blog2.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = mostLikes(singleAuthorBlogList);
@@ -36,21 +39,24 @@ describe("tests for function mostLikes", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested" ,
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 3",
         url: "http://blog2.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 2",
         url: "http://blog3.com",
         likes: 20,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = mostLikes(multipleAuthorBlogList);
@@ -64,28 +70,32 @@ describe("tests for function mostLikes", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 7,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 2",
         url: "http://blog3.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 2",
         url: "http://blog2.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 4",
         author: "Author 1",
         url: "http://blog4.com",
         likes: 3,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = mostLikes(sameLikesCountAuthorList);
@@ -99,35 +109,40 @@ describe("tests for function mostLikes", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 7,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 2",
         url: "http://blog3.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 2",
         url: "http://blog2.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 4",
         author: "Author 1",
         url: "http://blog4.com",
         likes: 3,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 5",
         author: "Author 3",
         url: "http://blog5.com",
         likes: 1,
-        user: "notested"
+        user: "notested",
+        comments: []
       }
     ];
     const result = mostLikes(someSameLikesAuthorList);

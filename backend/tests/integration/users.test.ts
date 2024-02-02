@@ -4,6 +4,7 @@ import app from "../../src/app";
 import bcrypt from "bcrypt";
 import User from "../../src/models/user";
 import helper from "../test_helper";
+import { beforeEach, afterAll, describe, test, expect } from "@jest/globals";
 
 const api = supertest(app);
 
@@ -26,13 +27,11 @@ describe("when there is initially one user in db", () => {
       password: "salainen",
     };
 
-    const result = await api
+    await api
       .post("/api/users")
       .send(newUser)
       .expect(200)
       .expect("Content-Type", /application\/json/);
-
-    console.log(result.error);
 
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
@@ -91,7 +90,7 @@ describe("when there is initially one user in db", () => {
         .expect(400)
         .expect("Content-Type", /application\/json/);
 
-      expect(result.body.error).toContain("weak password");
+      expect((result.body.error as string).toLowerCase()).toContain("weak password");
     });
   });
 

@@ -17,14 +17,16 @@ describe("tests for function mostBlogs", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 1",
         url: "http://blog2.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = mostBlogs(singleAuthorBlogList);
@@ -38,21 +40,24 @@ describe("tests for function mostBlogs", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 1",
         url: "http://blog2.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 2",
         url: "http://blog3.com",
         likes: 15,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
     const result = mostBlogs(multipleAuthorBlogList);
@@ -66,28 +71,32 @@ describe("tests for function mostBlogs", () => {
         author: "Author 1",
         url: "http://blog1.com",
         likes: 5,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 3",
         author: "Author 1",
         url: "http://blog3.com",
         likes: 7,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 2",
         author: "Author 2",
         url: "http://blog2.com",
         likes: 10,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
       {
         title: "Blog 4",
         author: "Author 2",
         url: "http://blog4.com",
         likes: 12,
-        user: "notested"
+        user: "notested",
+        comments: []
       },
     ];
 

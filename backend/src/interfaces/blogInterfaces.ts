@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { IUser } from "./user";
 
 export interface IBlog {
   id?: string,
@@ -6,7 +7,7 @@ export interface IBlog {
   author: string,
   url: string,
   likes: number,
-  user: Types.ObjectId | string
+  user: Types.ObjectId | string | IUser
   comments: Types.ObjectId[]
 }
 

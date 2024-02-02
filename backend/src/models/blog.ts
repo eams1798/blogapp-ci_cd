@@ -11,7 +11,7 @@ const blogSchema = new Schema<IBlog>({
     unique: true,
     validate: {
       validator: (v: string) => {
-        const urlRegex = /^((ftp|http|https):\/\/)?[^ "]+\.[a-z]+$/;
+        const urlRegex = /^((ftp|http|https):\/\/)?[^ "]+\.[a-z]+(\/[^ "]+)*\/?$/;
         return urlRegex.test(v);
       },
       message: props => `${props.value} is not a valid URL`

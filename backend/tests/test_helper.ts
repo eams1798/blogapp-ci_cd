@@ -26,16 +26,16 @@ const encryptPasswords = async (passw: string,) => {
 
 
 const initialBlogs: IBlog[] = [
-  { id: blogId1.toString(), title: "Exploring the Depths of the Ocean", author: "AquaMarine", url: "http://deepseaexploration.com", likes: 150, user: userId1 },
-  { id: blogId2.toString(), title: "The Majesty of Mountain Peaks", author: "AquaMarine", url: "http://mountainmajesty.com", likes: 200, user: userId1 },
-  { id: blogId3.toString(), title: "Adventures in the Amazon Rainforest", author: "AquaMarine", url: "http://amazonadventures.com", likes: 250, user: userId1 },
-  { id: blogId4.toString(), title: "The Silence of the Sahara Desert", author: "DesertDust", url: "http://saharasilence.com", likes: 300, user: userId2 },
-  { id: blogId5.toString(), title: "Unseen Beauty of the Arctic", author: "DesertDust", url: "http://arcticbeauty.com", likes: 350, user: userId2 },
+  { id: blogId1.toString(), title: "Exploring the Depths of the Ocean", author: "AquaMarine", url: "http://deepseaexploration.com", likes: 150, user: userId1, comments: [] },
+  { id: blogId2.toString(), title: "The Majesty of Mountain Peaks", author: "AquaMarine", url: "http://mountainmajesty.com", likes: 200, user: userId1, comments: [] },
+  { id: blogId3.toString(), title: "Adventures in the Amazon Rainforest", author: "AquaMarine", url: "http://amazonadventures.com", likes: 250, user: userId1, comments: [] },
+  { id: blogId4.toString(), title: "The Silence of the Sahara Desert", author: "DesertDust", url: "http://saharasilence.com", likes: 300, user: userId2, comments: [] },
+  { id: blogId5.toString(), title: "Unseen Beauty of the Arctic", author: "DesertDust", url: "http://arcticbeauty.com", likes: 350, user: userId2, comments: [] },
 ];
 
 let initialUsers: IUser[] = [
-  { id: userId1.toString(), username: "AquaMarine", name: "Marina Aqua", passwordHash:"hash1", blogs: [blogId1, blogId2, blogId3] },
-  { id: userId2.toString(), username: "DesertDust", name: "Dustin Sands", passwordHash: "hash2", blogs: [blogId4, blogId5] },
+  { id: userId1.toString(), username: "AquaMarine", name: "Marina Aqua", passwordHash:"hash1", blogs: [blogId1, blogId2, blogId3], comments: [] },
+  { id: userId2.toString(), username: "DesertDust", name: "Dustin Sands", passwordHash: "hash2", blogs: [blogId4, blogId5], comments: [] },
 ];
 
 const nonExistingBlogId = async (): Promise<string> => {
@@ -56,12 +56,12 @@ const nonExistingUserId = async (): Promise<string> => {
 };
 
 const blogsInDb = async (): Promise<IBlog[]> => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 }).populate("comments", { content: 1, user: 1 });
   return blogs.map(blog => blog.toJSON());
 };
 
 const usersInDb = async () => {
-  const users = await User.find({});
+  const users = await User.find({}).populate("blogs", { title: 1, author: 1, url: 1, likes: 1 });
   return users.map(u => u.toJSON());
 };
 
