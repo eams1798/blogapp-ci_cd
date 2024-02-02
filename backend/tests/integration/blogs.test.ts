@@ -93,8 +93,7 @@ describe("Testing blogs", () => {
       .send({ username: helper.initialUsers[0].username, password: helper.password1 });
 
     const userToken = loginResponse.body.token;
-    /*     console.log("response", loginResponse.status);
-    console.log(loginResponse.error); */
+
     await api
       .post("/api/blogs")
       .set("Authorization", `Bearer ${userToken}`)
