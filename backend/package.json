@@ -46,7 +46,6 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "globalTeardown": "./tests/teardown.js",
-    "testTimeout": 30000
+    "globalTeardown": "./tests/teardown.js"
   }
 }
