@@ -2,7 +2,7 @@ import axios from "axios";
 import { IBlog, UpdatableBlogParameters } from "../interfaces/blog";
 import storageService from "./storage";
 import { IComment } from "../interfaces/comment";
-const baseUrl = "http://localhost:3001/api/blogs";
+const baseUrl = "/api/blogs";
 
 const config = () => ({
   headers: {

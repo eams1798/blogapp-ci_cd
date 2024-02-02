@@ -50,8 +50,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           command: cd frontend && yarn test:e2e
-          start: cd backend && yarn start:cypress
-          wait-on: http://localhost:5000
+          start: cd backend && yarn start:test
+          wait-on: http://localhost:3001
           browser: chrome
           record: true
-          config-file: cypress.json
