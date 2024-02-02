@@ -5,12 +5,11 @@
   "license": "MIT",
   "scripts": {
     "start": "cross-env NODE_ENV=production ts-node src/index.ts",
+    "start:test": "cross-env NODE_ENV=test ts-node src/index.ts",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "lint": "eslint .",
-    "start:test": "NODE_ENV=test ts-node src/index.ts",
-    "start:cypress": "concurrently 'yarn start:test' 'cd ../frontend && yarn start:prod'",
-    "start:fullstack": "concurrently 'yarn start' 'cd ../frontend && yarn start:prod'"
+    "build:frontend": "cd ../frontend && yarn build && cp -r dist ../backend",
+    "lint": "eslint ."
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

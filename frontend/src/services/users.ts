@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IUser } from "../interfaces/user";
-const baseUrl = "http://localhost:3001/api/users";
+const baseUrl = "/api/users";
 
 const getAll = async (): Promise<IUser[]> => {
   try {
