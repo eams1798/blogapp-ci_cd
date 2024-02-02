@@ -93,6 +93,10 @@ describe("Testing blogs", () => {
       .send({ username: helper.initialUsers[0].username, password: helper.password1 });
 
     const userToken = loginResponse.body.token;
+    console.log("response", loginResponse.status);
+    console.log(loginResponse.error);
+    
+
     console.log("username", helper.initialUsers[0].username);
     console.log("password", helper.password1);
 
