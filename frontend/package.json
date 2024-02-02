@@ -10,7 +10,7 @@
     "start:prod": "yarn build && node app.js",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest --watch --verbose",
+    "test": "jest --verbose --runInBand",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run"
   },
