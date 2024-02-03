@@ -8,14 +8,55 @@ import Blog from "../src/components/Blog";
 import { IBlog } from "../src/interfaces/blog";
 import { loginResponse } from "../src/interfaces/login";
 
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import { AppState } from "../src/interfaces/reducers";
+import { MemoryRouter } from 'react-router-dom';
+
+const middlewares = [thunk];
+const mockStore = configureMockStore<AppState>(middlewares);
+
 describe("Tests for Blog component", () => {
-  let blog: IBlog,
+  let store: ReturnType<typeof mockStore>,
+    blog: IBlog,
     user: loginResponse,
-    setBlogs: jest.Mock,
     setNotification: jest.Mock,
     blogComponent: RenderResult;
 
   beforeEach(() => {
+    store = mockStore({
+      blogs: [{
+        title: "Component testing is done with react-testing-library",
+        author: "Robert C. Martin",
+        url: "https://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
+        likes: 10,
+        user: {
+          name: "Robert C. Martin",
+          username: "UncleBob",
+        },
+        id: "test-blog",
+        comments: [{
+          id: "test-comment",
+          content: "Test comment",
+          blog: "test-blog",
+          user: "UncleBob",
+        }],
+      }],
+      users: [{
+        name: "Robert C. Martin",
+        username: "UncleBob",
+      }],
+      notification: {
+        message: "",
+        type: null
+      },
+      loginUser: {
+        "token": "bearer 1234567890",
+        "username": "root",
+        "name": "root"
+      },
+    });
     blog = {
       title: "Component testing is done with react-testing-library",
       author: "Robert C. Martin",
@@ -31,17 +72,18 @@ describe("Tests for Blog component", () => {
       username: "UncleBob",
       token: "bearer 1234567890",
     };
-    setBlogs = jest.fn();
     setNotification = jest.fn();
 
     blogComponent = render(
-      <Blog
-        id="test-blog"
-        blog={blog}
-        setBlogs={setBlogs}
-        user={user}
-        setNotification={setNotification}
-      />,
+      <Provider store={store}>
+        <MemoryRouter>
+          <Blog
+            id="test-blog"
+            blog={blog}
+            loginUser={user}
+          />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
