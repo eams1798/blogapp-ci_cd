@@ -70,8 +70,9 @@ jobs:
     - name: Start server
       run: yarn start:test-background
       working-directory: ./backend
-    - name: wait for server
+    - name: Wait for server
       run: yarn wait-on http://localhost:3001
+      working-directory: ./frontend
     - name: E2E Tests
       uses: cypress-io/github-action@v5
       with:
