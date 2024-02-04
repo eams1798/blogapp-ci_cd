@@ -49,7 +49,7 @@ const LoginForm = ({ toggleVisibility }: { toggleVisibility: () => void}) => {
         />
       </Form.Group>
       <div className="form-buttons d-flex justify-content-evenly">
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" id="btn-login">
           Login
         </Button>
         <Button variant="primary" onClick={() => toggleVisibility()}>Cancel</Button>

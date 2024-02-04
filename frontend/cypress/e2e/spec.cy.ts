@@ -10,21 +10,24 @@ describe("Blog app", function () {
   });
 
   it("Login form is shown", function () {
+    cy.contains("Login").click();
     cy.contains("Username");
     cy.contains("Password");
   });
 
   describe("Login", function () {
     it("succeeds with correct credentials", function () {
-      cy.get("#username").type("UncleBob");
-      cy.get("#password").type("1234abcde");
+      cy.contains("Login").click();
+      cy.get("#formUsername").type("UncleBob");
+      cy.get("#formPassword").type("1234abcde");
       cy.get("#btn-login").click();
       cy.contains("Robert C. Martin logged in");
     });
 
     it("fails with wrong credentials", function () {
-      cy.get("#username").type("UncleBob");
-      cy.get("#password").type("wrong");
+      cy.contains("Login").click();
+      cy.get("#formUsername").type("UncleBob");
+      cy.get("#formPassword").type("wrong");
       cy.get("#btn-login").click();
       cy.contains("Invalid username or password");
     });
@@ -36,39 +39,41 @@ describe("Blog app", function () {
         username: "UncleBob",
         password: "1234abcde",
       });
-      /* cy.get('#username').type('UncleBob')
-      cy.get('#password').type('1234abcde')
+      /* cy.get('#formUsername').type('UncleBob')
+      cy.get('#formPassword').type('1234abcde')
       cy.get('#btn-login').click() */
       // for any reason, the app can't update with direct fetch login
+    });
+
+    it("visiting users", function () {
+      cy.contains("Users").click();
+      cy.contains("Robert C. Martin").click();
     });
 
     it("A blog can be created", function () {
       // look for the blog form and fill it in
       cy.contains("New blog").click();
-      cy.get("#title").type("My first blog");
-      cy.get("#author").type("Robert C. Martin");
-      cy.get("#url").type(
+      cy.get("#formTitle").type("My first blog");
+      cy.get("#formAuthor").type("Robert C. Martin");
+      cy.get("#formURL").type(
         "https://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
       );
-      cy.get("#likes").type("5");
-      cy.contains("Add blog").click();
+      cy.get("#formLikes").type("5");
+      cy.contains("Add Blog").click();
 
       cy.get("#notification")
         .should("contain", "A new blog My first blog by Robert C. Martin added")
         .and("have.css", "color", "rgb(0, 128, 0)");
 
-      cy.get("#blog-list")
-        .should("contain", "My first blog")
-        .contains("show")
-        .click();
-      cy.get("#blog-list")
-        .should("contain", "My first blog")
-        .should("contain", "Robert C. Martin")
-        .and(
-          "contain",
-          "https://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
+      cy.get("#blog-list").contains("My first blog by Robert C. Martin").click();
+      cy.get(".blog-content").should("contain", "My first blog");
+      cy.get(".blog-content").should("contain", "Robert C. Martin")
+      .and(
+        "contain",
+        "https://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
         )
         .and("contain", "5");
+      cy.contains("No comments");
     });
 
     describe("And a blog is created", function () {
@@ -80,10 +85,7 @@ describe("Blog app", function () {
           likes: 5,
         });
         cy.visitFrontend();
-        cy.contains("My first blog by Robert C. Martin")
-          .parent()
-          .contains("show")
-          .click();
+        cy.get("#blog-list").contains("My first blog by Robert C. Martin").click();
       });
 
       it("A blog can be liked", function () {
@@ -93,8 +95,6 @@ describe("Blog app", function () {
           .get(".btn-like")
           .click();
         cy.get(".blog-content")
-          .contains("My first blog")
-          .parent()
           .contains("Likes: 6");
       });
 
@@ -102,7 +102,7 @@ describe("Blog app", function () {
         cy.get(".blog-content")
           .contains("My first blog")
           .parent()
-          .get(".btn-delete")
+          .get(".btn-deleteBlog")
           .click();
         cy.get("#notification")
           .should(
@@ -128,7 +128,7 @@ describe("Blog app", function () {
         cy.get("#blog-list")
           .contains("My first blog")
           .parent()
-          .get(".btn-delete")
+          .get(".btn-deleteBlog")
           .should("not.exist");
       });
     });
@@ -159,62 +159,72 @@ describe("Blog app", function () {
       it("Blogs are ordered by likes", function () {
         cy.get("#blog-list>div")
           .eq(0)
-          .should("contain", "My third blog")
-          .and("contain", "15");
+          .contains("My third blog").click();
+        cy.get(".blog-content")
+          .contains("Likes: 15");
+        cy.contains("Blogs").click();
+
         cy.get("#blog-list>div")
           .eq(1)
-          .should("contain", "My second blog")
-          .and("contain", "10");
+          .contains("My second blog").click();
+          cy.get(".blog-content")
+            .contains("Likes: 10");
+          cy.contains("Blogs").click();
+
         cy.get("#blog-list>div")
           .eq(2)
-          .should("contain", "My first blog")
-          .and("contain", "5");
+          .contains("My first blog").click();
+          cy.get(".blog-content")
+            .contains("Likes: 5");
+          cy.contains("Blogs").click();
 
-        cy.get("#blog-list>div").eq(1).find(".btn-show").click();
-        cy.get("#blog-list>div").eq(1).find(".btn-like").click();
-        cy.get("#blog-list>div")
-          .eq(1)
+        cy.get("#blog-list>div").eq(1).find("a").click();
+        cy.get(".blog-content").find(".btn-like").click();
+        cy.get(".blog-content")
           .should("contain", "My second blog")
-          .and("contain", "11");
-        cy.get("#blog-list>div").eq(1).find(".btn-like").click();
-        cy.get("#blog-list>div")
-          .eq(1)
+          .and("contain", "Likes: 11");
+        cy.get(".blog-content").find(".btn-like").click();
+        cy.get(".blog-content")
           .should("contain", "My second blog")
-          .and("contain", "12");
-        cy.get("#blog-list>div").eq(1).find(".btn-like").click();
-        cy.get("#blog-list>div")
-          .eq(1)
+          .and("contain", "Likes: 12");
+        cy.get(".blog-content").find(".btn-like").click();
+        cy.get(".blog-content")
           .should("contain", "My second blog")
-          .and("contain", "13");
-        cy.get("#blog-list>div").eq(1).find(".btn-like").click();
-        cy.get("#blog-list>div")
-          .eq(1)
+          .and("contain", "Likes: 13");
+        cy.get(".blog-content").find(".btn-like").click();
+        cy.get(".blog-content")
           .should("contain", "My second blog")
-          .and("contain", "14");
-        cy.get("#blog-list>div").eq(1).find(".btn-like").click();
-        cy.get("#blog-list>div")
-          .eq(1)
+          .and("contain", "Likes: 14");
+        cy.get(".blog-content").find(".btn-like").click();
+        cy.get(".blog-content")
           .should("contain", "My second blog")
-          .and("contain", "15");
-        cy.get("#blog-list>div").eq(1).find(".btn-like").click();
-        cy.get("#blog-list>div")
-          .eq(1)
+          .and("contain", "Likes: 15");
+        cy.get(".blog-content").find(".btn-like").click();
+        cy.get(".blog-content")
           .should("contain", "My second blog")
-          .and("contain", "16");
-        cy.visitFrontend();
+          .and("contain", "Likes: 16");
+        cy.contains("Blogs").click();
 
         cy.get("#blog-list>div")
           .eq(0)
-          .should("contain", "My second blog")
-          .and("contain", "16");
+          .contains("My second blog").click();
+          cy.get(".blog-content")
+            .contains("Likes: 16");
+          cy.contains("Blogs").click();
+
         cy.get("#blog-list>div")
           .eq(1)
-          .should("contain", "My third blog")
-          .and("contain", "15");
+          .contains("My third blog").click();
+        cy.get(".blog-content")
+          .contains("Likes: 15");
+        cy.contains("Blogs").click();
+
         cy.get("#blog-list>div")
           .eq(2)
-          .should("contain", "My first blog")
-          .and("contain", "5");
+          .contains("My first blog").click();
+          cy.get(".blog-content")
+            .contains("Likes: 5");
+          cy.contains("Blogs").click();
       });
     });
   });

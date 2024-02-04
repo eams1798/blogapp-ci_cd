@@ -16,14 +16,14 @@ interface IBlogListProps {
 const BlogList = ({ loginUser, blogs }: IBlogListProps) => {
   const togglableRef = useRef<TogglableRef>(null);
   return (
-    <div id="blog-list" className="pt-5">
+    <div id="blogs" className="pt-5">
       {loginUser?
         <Togglable className="mt-2 mb-2" openButtonLabel="New blog" closeButtonLabel="_nobutton" ref={togglableRef}>
           <></>
           <BlogForm toggleVisibility={() => togglableRef.current!.toggleVisibility()}/>
         </Togglable>
         : <></>}
-      <ListGroup className="mt-2 mb-2">
+      <ListGroup id="blog-list" className="mt-2 mb-2">
         {blogs.map((blog) => (
           <ListGroup.Item key={blog.id} id={blog.id} className="blog container d-flex justify-content-between align-items-center align-content-center">
             <Link className="m-2 col-xs-5" to={`/blogs/${blog.id}`}>{blog.title} by {blog.author}</Link>

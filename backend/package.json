@@ -4,12 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=production ts-node src/index.ts",
-    "start:test": "cross-env NODE_ENV=test ts-node src/index.ts",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "build:frontend": "cd ../frontend && yarn build && cp -r dist ../backend",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start": "yarn build:frontend && cross-env NODE_ENV=production ts-node src/index.ts",
+    "start:test": "yarn build:frontend && cross-env NODE_ENV=test ts-node src/index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
