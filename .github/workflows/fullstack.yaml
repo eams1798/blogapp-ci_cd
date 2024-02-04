@@ -68,7 +68,7 @@ jobs:
     - name: Install frontend and backend packages
       run: cd frontend && yarn install && cd ../backend && yarn install
     - name: E2E Tests
-      run: cd backend && yarn start:test-background && cd ../frontend && yarn test:e2e
+      run: cd backend && yarn start:test-background && cd ../frontend && yarn wait-on http://localhost:3001 && yarn test:e2e
     - name: Deploy to production
       id: deploy
       env:
