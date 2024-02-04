@@ -7,6 +7,7 @@
     "dev": "vite",
     "generate-js": "tsc src/*.tsx --jsx react-jsx --esModuleInterop --outDir ./assets",
     "build": "yarn generate-js && vite build --outDir ./dist --assetsDir ./assets && rm -rf assets/",
+    "start:test": "cd ../backend && yarn start:test",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "jest --verbose --runInBand",

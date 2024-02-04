@@ -51,7 +51,7 @@ jobs:
         with:
           working-directory: ./frontend
           command: yarn test:e2e
-          start: cd ../backend && yarn start:test
+          start: yarn start:test
           wait-on: http://localhost:3001
           browser: chrome
           record: true
