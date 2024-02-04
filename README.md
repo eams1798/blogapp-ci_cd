@@ -37,12 +37,14 @@ The project structure follows a standard pattern for React applications with Typ
 
 ## How to start
 
-1. Clone the repository on your local machine, located at the root of the project (one level above the current one).
-2. Go to /blogapp/backend
+1. Clone the repository on your local machine.
+2. Go to /backend directory
 3. Install the backend dependencies with `npm install` or `yarn install`.
-4. Register or log in to MongoDB Atlas
-5. Create a Database in MongoDB Atlas
-6. Create a .env file in the current directory. It must contain the following information:
+4. Return and go to /frontend
+5. Install the frontend dependencies with `npm install` or `yarn install`.
+6. Register or log in to MongoDB Atlas
+7. Create a Database in MongoDB Atlas
+8. Create a .env file in the /backend directory. It must contain the following information:
 
 ```
 PORT=3001
@@ -51,8 +53,6 @@ TEST_MONGODB_URI=mongodb+srv://yourUsername:yourPassword@nameOfYourDataBase.mong
 SECRET=# place any word here
 ```
 
-7. Start the backend development server with `npm run dev` or `yarn dev`.
-8. Go back one level and go to /frontend
-9. Install the frontend dependencies with `npm install` or `yarn install`.
-10. Start the frontend development server with `npm run dev` or `yarn dev`.
-11. Open [http://localhost:5173](http://localhost:5173) in your browser to see the application in action.
+9. Build the frontend using yarn build:frontend from the /backend directory
+10. Start the backend using yarn start
+11. Open [http://localhost:3001](http://localhost:3001) in your browser to see the application in action.
