@@ -70,17 +70,8 @@ jobs:
     - name: Start server
       run: yarn start:test-background
       working-directory: ./backend
-    - name: Wait for server
-      run: yarn wait-on http://localhost:3001
-      working-directory: ./frontend
     - name: E2E Tests
-      uses: cypress-io/github-action@v5
-      with:
-        working-directory: ./frontend
-        command: yarn test:e2e
-        wait-on: http://localhost:3001
-        browser: chrome
-        record: true
+      run: cd backend && yarn start:test-background && cd ../frontend && yarn wait-on http://localhost:3001 && yarn test:e2e
     - name: Deploy to production
       id: deploy
       env:
