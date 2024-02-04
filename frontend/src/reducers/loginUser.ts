@@ -3,6 +3,8 @@ import { AppThunkDispatch } from "../interfaces/reducers";
 import { loginCredentials, loginResponse } from "../interfaces/login";
 import loginService from "../services/login";
 import storageService from "../services/storage";
+import axios from "axios";
+import { setAxiosErrorMessage } from "./notification";
 
 const loginUserSlice = createSlice<loginResponse | null, SliceCaseReducers<loginResponse | null>>({
   name: "user",
@@ -24,9 +26,17 @@ export const loadLoginUser = () => (dispatch: AppThunkDispatch) => {
 };
 
 export const login = ({ username, password }: loginCredentials) => async (dispatch: AppThunkDispatch) => {
-  const user = await loginService.login({ username, password });
-  storageService.saveLoggedUser(user);
-  dispatch(setUser(user));
+  try {
+    const user = await loginService.login({ username, password });
+    storageService.saveLoggedUser(user);
+    dispatch(setUser(user));
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      dispatch(setAxiosErrorMessage(error));
+    } else {
+      console.log(error);
+    }
+  }
 };
 
 export const logout = () => (dispatch: AppThunkDispatch) => {

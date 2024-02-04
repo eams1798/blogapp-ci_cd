@@ -26,12 +26,8 @@ const startApp = async () => {
     app.use(middleware.requestLogger);
     app.use(middleware.tokenExtractor);
 
-    app.get("/", (req, res) => {
-      res.sendFile("index.html", { root: "dist" });
-    });
-
-    app.get("/users", (req, res) => {
-      res.sendFile("index.html", { root: "dist" });
+    app.get("/blogs", (req, res) => {
+      res.redirect("/");
     });
 
     app.get("/health-check", (req, res) => {
@@ -46,6 +42,11 @@ const startApp = async () => {
     if (process.env.NODE_ENV === "test") {
       app.use("/api/testing", testingRouter);
     }
+
+    app.get("*", (req, res) => {
+      res.sendFile("index.html", { root: "dist" });
+    });
+
     app.use(middleware.unknownEndpoint);
     app.use(middleware.errorHandler);
 

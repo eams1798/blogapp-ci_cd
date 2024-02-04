@@ -27,7 +27,14 @@ jobs:
         run: cd backend && yarn lint
       - name: Test
         run: cd backend && TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }} SECRET=${{ secrets.SECRET }} yarn test
-  frontend_test_and_fullstack_deployment:
+      - name: Test Failure
+        uses: BubbleProd/discord-webhook-notify@v2
+        if: failure()
+        with:
+            severity: error
+            details: Pipeline failed
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  frontend_tests:
     runs-on: ubuntu-20.04
     needs:
       - backend_workflow
@@ -46,23 +53,6 @@ jobs:
         run: cd frontend && yarn build
       - name: Test
         run: cd frontend && yarn test
-      - name: Test e2e
-        uses: cypress-io/github-action@v5
-        with:
-          command: cd frontend && yarn test:e2e
-          start: cd backend && yarn start:test
-          wait-on: http://localhost:3001
-          browser: chrome
-          record: true
-      - name: Deploy to production
-        id: deploy
-        env:
-          COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ' ') }}
-        if: ${{ github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip') }}
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
       - name: Test Failure
         uses: BubbleProd/discord-webhook-notify@v2
         if: failure()
@@ -70,16 +60,53 @@ jobs:
             severity: error
             details: Pipeline failed
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Test Failure at Deploy
-        uses: BubbleProd/discord-webhook-notify@v2
-        if: ${{ steps.deploy.conclusion == 'failure' }}
-        with:
-            severity: error
-            details: ${{ steps.deploy.outputs.message }}
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  e2e-tests_and_deploy:
+    runs-on: ubuntu-20.04
+    needs:
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Install frontend and backend packages
+      run: cd frontend && yarn install && cd ../backend && yarn install
+    - name: Start server
+      run: yarn start:test-background
+      working-directory: ./backend
+    - name: wait for server
+      run: yarn wait-on http://localhost:3001
+    - name: E2E Tests
+      uses: cypress-io/github-action@v5
+      with:
+        working-directory: ./frontend
+        command: yarn test:e2e
+        wait-on: http://localhost:3001
+        browser: chrome
+        record: true
+    - name: Deploy to production
+      id: deploy
+      env:
+        COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ' ') }}
+      if: ${{ github.event_name == 'push' && !contains(env.COMMIT_MESSAGES, '#skip') }}
+      uses: johnbeynon/render-deploy-action@v0.0.8
+      with:
+        service-id: ${{ secrets.RENDER_SERVICE_ID }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
+    - name: Test Failure
+      uses: BubbleProd/discord-webhook-notify@v2
+      if: failure()
+      with:
+          severity: error
+          details: Pipeline failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    - name: Test Failure at Deploy
+      uses: BubbleProd/discord-webhook-notify@v2
+      if: ${{ steps.deploy.conclusion == 'failure' }}
+      with:
+          severity: error
+          details: ${{ steps.deploy.outputs.message }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-    needs: frontend_test_and_fullstack_deployment
+    needs: e2e-tests_and_deploy
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4

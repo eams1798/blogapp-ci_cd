@@ -32,7 +32,7 @@ const Blog = ({ id, blog, loginUser }: IBlogProps) => {
         <li className="d-flex align-items-center">
           <span className="col-5 col-sm-8 col-md-10">Likes: {blog.likes}</span>
           {loginUser ? (
-            <Button className="mx-2" variant="primary" onClick={() => void dispatch(likeBlog(blog))}>
+            <Button className="mx-2 btn-like" variant="primary" onClick={() => void dispatch(likeBlog(blog))}>
               Like
             </Button>
           ) : (
